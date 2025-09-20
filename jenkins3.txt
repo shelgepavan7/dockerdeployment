@@ -1,0 +1,190 @@
+**Manage Jenkins > System 
+
+   1.SCM checkout retry count:
+       *Imagine your job pulls code from GitHub. If the network is slow or GitHub is briefly down, the first attempt might fail.
+       *if we set 
+          SCM checkout retry count = 2
+       *Then Jenkins will try 2 more times before giving up
+   
+   2.Serve resource files from another domain
+       *This setting allows Jenkins to load things like images, scripts, or CSS files from a different domain (instead of from Jenkins itself).
+
+   3.What Does "Disable Deferred Wipeout on This Node" Mean?
+       *When you disable deferred wipeout on a node:
+         -Jenkins will delete the workspace immediately, not in the background.
+         -This ensures that the workspace is fully cleaned up before any new jobs start on that node.
+
+-------------------------------------------------------------------------------
+**Manage Jenkins > User
+     - Create User  > Username > passowrd
+------------------------------------------------------------------------------- 
+**Manage Jenkins > Security > Authorization
+  1. Matrix-Based Security :Provides a permissions matrix where you can assign specific permissions to users or groups across the entire Jenkins environment.
+     - give permission based on required
+
+  2. Project-Based Matrix Authorization Strategy :Extends the Matrix-Based Security by allowing you to define permissions on a per-project basis.
+     - give permission based on required
+
+--------------------------------------------------------------------------------
+**Role-based Authorization Strategy:
+      The Role-Based Authorization Strategy in Jenkins allows administrators to define roles with specific permissions and assign them to users or groups. This approach provides granular control over what each user can access and perform within Jenkins.
+
+**How to install it and how to use like for three role - Developer ,Tester, DevOps
+
+ Step1: Install the Role-Based Authorization Strategy Plugin
+         Manage Jenkins → Manage Plugins → Available → Search Role-based Authorization Strategy → Install 
+
+ Step2: Enable Role-Based Strategy
+        Go to Manage Jenkins → Configure Global Security → Authorization → select Role-Based Strategy → Click Apply to save
+
+ Step3 : Add Roles(Create Roles) 
+         Manage Jenkins → Manage and Assign Roles → Manage Roles.
+
+         Global Roles: Permissions that apply across the entire Jenkins instance.
+         Project(Job) Roles: Permissions specific to certain jobs or projects.
+         Agent Roles: Permissions related to Jenkins agents (nodes).
+
+         Example - Create Three Roles -  Developer ,Tester, DevOps
+
+                   **This steps for Global roles
+                        *Every roles first add in Global roles
+                      Step1: Role Add - Name of Role like Developer 
+                      Step2: Add  
+                        *Tip : Add multiple roles you want  
+                      Step3: you should Assign Overall read Permissions.
+
+                   **This steps for Item roles - 
+                      Step1: Add Role 
+                      Step2: Pattern -it will select specific job .like- dev.* 
+                      Step3: Add 
+                      
+
+ Step4: Assign Roles to user - Check user created or not other wise create new user
+         *Every User should add in Global roles and add there specific Roles. like Developer
+            *Global roles - 
+              Step1: Click on Add User
+              Step2: Name of user and add and add in specific roles  
+            
+            *Item roles - Add also in Item roles
+              Step1: Click on Add User
+              Step2: Name of user and add and add in specific roles
+
+ 
+-----------------------------------------------------------------------------------------------------------------
+**Maven -
+- Maven is Java project management tool.
+- Build tool
+- Manages Dependencies
+
+**MAVEN :-
+      Maven is an Automation and Project management tool developed by Apache Software foundation  It is based on POM (Project object Model) 
+
+→ Maven Can build any number of projects into desired Output such as .far, .war, metadata 
+→ Mostly used for Java based projects. 
+→It was initially released on  13 July 2004.
+→ Maven is written in Java 
+→ Meaning of Maven is "Accumulator of Knowledge"(collect all knowledge) 
+→ Maven helps us getting the right Jar file for each project as there may be different              Version of Separate Packages. 
+→ To download dependencies it is no more needed to visit the official Website of each Software It Could now be easily done "mvnrepository.com" 
+
+Dependencies → 
+              It refers to the Java libraries that are needed for the project.
+
+Repositories → 
+              It Refers to the directories of packaged jar files 
+
+Build tools →
+   Java -- Ant, Maven, gradle
+--------------------------------------------------------
+What Maven does ? 
+ 1.It makes a project easy to build 
+ 2.It provides project information (for eg - log document, Cross Reference Sources, mailing  list, dependency list, unit test) 
+ 3.Easy to add new dependencies Therefore, Apache Maven helps to Manage 
+    1.Build 
+    2.Dependencies  
+    3.Reports 
+    4.Releases 
+    5.Distribution
+
+-----------------------------------------------------------------------------------
+**What is Build tool? 
+    A  build tool take Care of everything for building a process. It does following" 
+    → Generate Source Code  
+    → Generate documentation from Source code 
+    → Compiles Source Code 
+    → Install the package Code in local repo, Server repo or Central Repository 
+
+**POM (Project Object Model) :
+  → POM refers to the XML files that have all the Information regarding project and     Configuration details 
+  → Main Configuration file is pom.xml 
+  →It has the description of the project details regarding the versioning and Configuration management of the project 
+  →The XML file is in the project home directory 
+
+**Pom xml file Contain: 
+  → Metadata 
+  → Dependences 
+  → Kind of project 
+  → kind of Output (jar, war) 
+  → Description 
+
+*One project → one Workspace → one pom.xml 
+
+**Architecture of Maven :
+                                 Workspace 
+
+   GitHub →  Source code →  pom.xml(add dependencies) → goals(command) → .M2 local repo → Remote/Central repo
+        
+**Requirement for Build: 
+  → Source Code (Present in Workspace) 
+  → Compiler (Remote repo → local repo → workspace) 
+  → Dependencies (Remote repo → local repo → workspace)
+
+
+Local Repository → Local repository refers to the machine of the developer where all the project material is Saved 
+
+Remote Repository → It refers to the repository present on a Webserver which is used when Maven needs to download dependencies This repository works same as the Central Repo whenever anything is needed from remote repository it is first downloaded to local repo and then it is used. 
+
+Central Repository → Central Repository refers to the Maven Community that Comes into action when there is a need of dependencies and those dependencies Cannot be found in the local repository.
+
+-----------------------------------------------------------------------------
+**Maven Life-cycle
+ 1. Generate Resources (Dependencies)
+ 2. Compile code
+ 3. Unit Test
+ 4. Package (Build)
+ 5. Install (into local and antifactory)
+ 6. Deploy (to servers)
+ 7. Clean
+
+-------------------------------------------------------------------------------
+
+**Difference between Ant and Maven 
+  *Ant 
+     → Ant does not has formal Conventions, so we need to provide information of the  project structure in build xml file 
+     → Ant is procedural, you need to provide into about what to do and  when t do through code. 
+     → There is no lifecycle in Ant 
+     → It is a tool box 
+     → It is mainly a build tool. 
+     → It is less preferred than Maven.
+ 
+ *Maven 
+     → Maven has a Convention to place source Code, Compiled Code etc. So we don't need to provide information about the project structure in pom.xml file. 
+     → Maven is declarative, everything you define the in the pom.xml file. 
+     → There is a lifecycle in Maven. 
+     → It is a framework. 
+     → It is mainly a project Management tool 
+     → It is more preferred
+
+
+Maven Directory Structure - 
+
+       New_Project
+                   --Src
+                        -main - app.java(Source code)
+                        -test - apptest.java  
+                   --pom.xml
+             
+
+
+ 
+               
