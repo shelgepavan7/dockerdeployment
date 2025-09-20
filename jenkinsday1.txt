@@ -1,0 +1,207 @@
+**Jenkins Installation
+
+***Common Command 
+ Check User - cat /etc/passwd
+ check disk space usage - df -h 
+ Jankins home directory - cd /var/lib/Jenkins  -> ll
+ All Job available in workspace file - cd  workspace
+ Check Linux files - cd /etc/yum.repos.d/
+ Check which OS install - cat /etc/os-release
+ Check java install or not - netstat -ntulp |grep L
+
+----------------------------------------------------------------
+Step1:
+   1 .https://www.jenkins.io/download/
+   open this website and follow documentation
+
+   **This command not for Linux machine. this for Redhat 
+   dnf install fontconfig java-21-openjdk
+
+   **Use this Command for java environment (install java for ...)
+   cmd : yum install java-17-amazon-corretto-headless
+
+step2:
+   **Check file install or not
+   netstat -ntulp |grep L
+
+step3:
+   **Jenkin Command:
+
+   *Check status : systemctl status Jenkins
+   *Start Jenkin : systemctl start Jenkins
+   *Enable Jenkin : systemctl enable jenkins
+
+Step5:
+   **Copy IP and search on chorome using port 8080
+   exmaple : http://65.1.86.228:8080/
+   **Tip - you shoude be open port 8080 in Security Group
+
+Step6:
+   Cmd: cat /var/lib/jenkins/secrets/initialAdminPassword
+
+   Run this command and copy password and paste on jankin website 
+
+Step7:
+  Install Suggestion Plugin
+
+Step8:
+  **Give Username password etc
+
+---------------------------------------------------------------------------------------
+**Create Job (also called a project)
+
+Step1:
+  Create New Item 
+  Select Item type
+
+Step 2: Configure the Job
+    General Section
+    You can add a description like:
+    This is my first Jenkins job to test basic setup.
+
+ 👉 Source Code Management (Optional)
+       If you're not connecting to Git yet, skip this for now.
+
+ Later, you can select Git and enter your repo URL.
+
+ 👉 Build Triggers
+     Leave this empty for now.
+
+  Later, you can check GitHub hook trigger to trigger builds automatically on pushes.
+
+ 👉 Build Section
+     Click Add build step → Execute shell
+
+Type a simple command:
+     echo "Hello from Jenkins!" >/tmp/filename.txt
+
+Step 4: Save the Job
+Click Save
+
+✅ Step 5: Build the Job
+Click “Build Now” on the left panel.
+
+You’ll see the build appear in the Build History
+
+**if there dick space related error (Dashboard>Nodes>Built-In-Node>Configure)
+  convert dick 0 number
+----------------------------------------------------------------------------------
+**Free Style  Project
+
+***Configure > Triggers > Build after other projects are built
+
+  Try this practice
+  Job A: Build Code
+  Job B: Run Tests
+  Job C: Deploy to Server
+  planning a CI/CD pipeline with three Jenkins jobs:
+
+**Jenkins: Upstream vs Downstream Jobs
+   🔼 Upstream Job
+       An Upstream Job is the job that triggers another job.
+
+      For example:
+       Job A triggers Job B
+       So, A is the upstream of B
+
+   🔽 Downstream Job
+       A Downstream Job is the job that gets triggered by another job.
+
+       In the same example:
+       Job B is triggered by A
+       So, B is the downstream of A
+----------------------------------------------------------------------
+
+***Configure > Triggers > Build periodically
+  
+*Always runs, even if no changes
+     It means Jenkins will automatically trigger the job at the time(s) you define — even if there’s no code change or manual trigger.
+
+ Use this website for Schedule calculation - https://crontab.guru/
+--------------------------------------------------------------------------------------
+ 
+***Configure > Triggers >Poll SCM
+
+ *Source code changes
+     a powerful feature to automatically trigger builds when your source code changes (like in GitHub or GitLab).
+
+Add Repo , Install git on server ,
+
+ Use this website for Schedule calculation - https://crontab.guru/
+-----------------------------------------------------------------------------------
+
+***Configure > Triggers > GitHub hook trigger for GITScm polling 
+  * Jenkins automatically triggers a build as soon as you push code to GitHub.
+
+  Practical :
+   Step 1: Create or Open a Freestyle Project Go to Jenkins
+          Click New Item → Choose Freestyle project → Name it → Click OK
+
+   Step 2: Configure GitHub Repository
+           1.Inside the job, go to Configure
+           2.Scroll to Source Code Management → Choose Git
+           3.Add your GitHub repo URL (e.g., https://github.com/Sohelsh/sample-node-app.git)
+           *If the repo is private, use credentials (Add under Jenkins credentials
+
+   Step 3: Enable GitHub Hook Trigger Scroll to Build Triggers
+           Check ✅ GitHub hook trigger for GITScm polling
+           Don’t enable "Poll SCM" — this is event-based, not timed
+
+
+    Step 4: Configure Webhook in GitHub 
+            1.Go to your GitHub repo → Settings → Webhooks
+            2.Click Add Webhook
+            3.Payload URL:
+               http://<your-jenkins-public-IP>:8080/github-webhook/
+                (Use https if required)
+            4.Content type: application/json
+            5.Secret: Leave empty (optional)
+            6.Which events?: Select Just the push event
+            7.Click Add Webhook
+
+    Step 5: Push Code to GitHub and Watch Jenkins
+            1.install git on server
+            2.clone repo
+            3.now change and git add , git commit , git push
+            4.Go to Jenkins → You should see the job trigger automatically!
+----------------------------------------------------------------------------------
+***Configure > Environment
+
+  1.Delete workspace before build starts
+     *Purpose: Cleans the workspace directory before starting a new build.
+     *Use Case: Prevents issues caused by leftover files from previous builds.
+     *Useful for builds that might behave differently based on old data.
+
+  2.Use secret text(s) or file(s)
+     *Purpose: Injects secrets (like API keys, tokens, passwords) securely into the build environment.
+     *Use Case: Needed when accessing secure services (e.g., AWS, GitHub tokens).
+     *You can define these under: Manage Jenkins → Credentials
+     *Secrets are injected as environment variables.
+   
+  3.Add timestamps to the Console Output
+     *Purpose: Adds time logs to each console output line.
+     *Helps with debugging and performance monitoring.
+
+  4.Inspect build log for published build scans
+     *Purpose: Enables integration with build scan tools (like Gradle Build Scans).
+     *Use Case: Lets you view detailed performance and diagnostic info after the build.
+     *Not commonly used unless you integrate tools like Gradle Enterprise.
+  
+  5.Purpose: Automatically stops a build that hangs or takes too long.
+     *Useful for preventing wasted resources and hanging pipelines.
+     *You can set a timeout (e.g., 10 minutes).
+
+  6.With Ant
+     *Purpose: Allows you to run Apache Ant scripts (Java build tool).
+     *Use Case: Legacy Java projects that still use build.xml for builds.
+     *Required: Ant plugin + Ant installed/configured in Jenkins.
+
+------------------------------------------------------------------------------------
+***Configure > Build Steps
+
+***Configure > Post-build Actions  (Study both in Jenkins)
+
+
+Interview Question :
+
+1. Tell at lest 5 plugin in Jenkins
