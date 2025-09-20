@@ -1,0 +1,62 @@
+Practical Of Maven - Technical Guftgu -Lec -37
+
+Project 1 : Windows
+
+1. Install git 
+2. Install java 
+   1.(java development kit search it) Choose version and download x64 Installer 
+   2.Go in C drive -> Click Program -> choose java -> Click jdk -> copy path 
+   3. search environment variable -> click environment variable -> Create two variable in user variables and system     variables and name it JAVA_HOME and paste path
+   4. same file in jdk open bin folder and copy path now go in environment variable -> and now search path in system variable and and add new path and paste this path
+
+3.install maven_apache on Windows
+  1. Search maven.apache.org -> Choose Binary zip archive and download zip file 
+  2. Extract this zip file in new folder and open apache maven file and copy path 
+  3. edit system variable -> create new folder M2_HOME and paste this path
+  4. now open bin folder from apache maven folder & copy path and chhoce path from system variable and this path -- check - mvn -version
+
+4.Install Jenkins - 
+  1 . Jenkins.io go this official website (jenkins.io/download)
+  2 . Choose windows and download  - > Next 
+  3 . Run service as local system(choose this option)
+  4 . Test port -> next -> download -> finish -> Search localhost:8080
+
+Lec - 38
+
+1.Login Jenkins -> Go in manage Jenkins > Add Plugin > Install Maven Integration ->
+2. we have already installed tools like java, we should add there path in Jenkins server so now :-
+   1.go in manage Jenkins -> Tools -> Add JDK -> Name it first like java -> In JAVA_HOME paste java path  
+   2.Same as Maven also -> Tools -> Add Maven -> Unclick it because we have already install maven -> Name it ->  
+     paster maven path -> Save it
+3. Now open CMD and git clone https://github.com/Sohelsh/testjava.git
+4. Now check this repo installed in your local machine ,now cd it and run one command - mvn clean pakage
+5. Now do same thing using Jenkins go in Jenkins select maven project and name it -> now add git link -> scroll down   
+   in Build option -> Goals and options -> write in -> clean package -> Save it and run it -> This only for try 
+
+
+*Scheduled Project - (Its Build every time )
+
+ Click on any project -< Configuration -> Triggers -> Build periodically -> Schedule -> * * * * *
+ First Star * = Min
+ Second Star * = Hours
+ Third Star * = Day
+ Fourth Star * = Week
+ Fifth Star * = Months
+
+* Source code polling (SCM) - (Its build when developer do chages)
+   Click on any project -< Configuration -> Triggers -> Poll SCM -> Schedule -> * * * * * -> now go in github do  
+   some chages -> You can see after 1 min , it build automatically 
+
+Lec - 39
+Upstream - Post Build Action
+Downstream
+
+
+
+
+
+
+
+
+
+  
