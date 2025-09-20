@@ -1,0 +1,130 @@
+**Terraform is an infrastructure as code tool that enables you to safely and predictably provision and manage infrastructure in any cloud.
+
+**Installation of Terraform -
+
+
+**Why do we create .tf files ?
+  -The .tf file is the heart of Terraform — it's where you write the instructions to define your infrastructure..tf stands for Terraform file. These files contain declarative code that tells Terraform what resources to create, modify, or destroy.
+
+** What is inside a .tf file?
+You define things like:
+
+    -Which cloud provider to use (e.g., AWS, Azure, GCP)
+    -What resources to create (e.g., EC2 instance, S3 bucket, VM, Network)
+    -Configuration options (CPU, memory, region, tags, etc.)
+    -Variables and outputs for flexibility and reusability
+
+**Create main.tf file on Vs code
+ example
+
+Step1:
+-----------------------------------------------------------------------------------------
+ provider "aws" {
+  region = "us-east-1"
+}
+------------------------------------------------------------------------------------------
+
+Step2: Run this command - 
+    -cmd: terraform init 
+
+The terraform init command initializes a new or existing Terraform project.
+It’s the first command you must run after writing or downloading any .tf files
+
+
+Step3: Create User in AWS :
+**Why do you need an AWS user?
+  --Terraform needs permission to create, update, or delete AWS resources.
+    like -EC2 instances,S3 buckets, VPCs, IAM roles
+
+Step4: Create Security Credentials for User
+   -it needs an identity — and that's where an AWS IAM user comes in.
+   1.Crate First Access Key for user in AWS
+     Select User -> Click on Security Credentials -> Create access key -> Select CLI ->
+     Confirmation ✅ -> Next -> Create access key
+     
+Step5: Install AWS CLI
+ -Yes,the AWS CLI is required
+ -Terraform uses it (indirectly) to authenticate with AWS using your Access Key ID and     Secret Access Key.
+ *Why this is important ?
+   -Terraform will automatically read these credentials to connect to AWS. So when your .tf file uses the AWS provider, it will authenticate using the keys you've configured.
+  
+ ##Step of install AWS cli
+    1.Go to the AWS CLI download page:
+        https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html
+
+    2.Click on "Windows 64-bit (MSI installer)" to download.
+
+    3.Run the installer and follow the steps (Next → Next → Finish).
+
+    4.After installing, open Command Prompt and run:
+      cmd: aws --version (for checking is install or not)
+   
+    **5. Save our Access Key ID and Secret Access Key (from your IAM user): 
+          cmd: aws configure
+
+    **7.Now Enter your 
+        AWS Access Key ID [None]: <your access key>
+        AWS Secret Access Key [None]: <your secret key>
+        Default region name [None]: us-east-1     ← (you can change this later)
+        Default output format [None]
+
+    8.Press Enter to finish.
+
+
+Step6: Create S3 Bucket with Terraform . 
+   Write the Terraform Code (main.tf).
+-------------------------------------------------------------------------------------------
+provider "aws" {
+  region = "us-east-1" # or your preferred region
+}
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "my-unique-bucket-name-12345678" # must be globally unique!
+  acl    = "private"
+
+  tags = {
+    Name        = "MyS3Bucket"
+    Environment = "Dev"
+  }
+}
+-------------------------------------------------------------------------------------------
+ ****Explanation of code
+  1. provider "aws" block → This tells Terraform to use AWS as the cloud provider.
+  2. region = "us-east-1" → specifies the AWS region where resources will be created.
+     Without this, Terraform won’t know which cloud or region to target.
+
+  3. resource "aws_s3_bucket" "my_bucket" → This tells Terraform to create a new S3 bucket on AWS.
+     -aws_s3_bucket → The type of resource(we can use any resource like VPC,)
+     -"my_bucket" → A name used inside Terraform only (for reference)
+
+   4.bucket = "my-unique-bucket-name-12345678" → This is the actual name of the S3 bucket on AWS.Must be globally unique.
+
+   5.acl = "private" → Sets the Access Control List (ACL).
+        -"private" means only the bucket owner can access it — no public access.
+
+   6.tags = { ... } → Tags help identify and organize your AWS resources.
+         -"Name" = "MyS3Bucket" → Helpful name tag
+          -"Environment" = "Dev" → Useful to group resources by environment (Dev, QA, Prod, etc.)
+
+
+Step7: Check code is validate or note using command 
+     cmd: terraform validate
+
+Step8: Run this plan command → terraform plan is a preview command. It shows you what
+       Terraform will do — before it actually does anything.
+It helps you review and verify changes without making any real changes yet.
+
+     cmd :terraform plan
+
+
+Step9: Run this apply command → terraform apply executes the changes defined in your 
+       .tf files and confirmed by terraform plan. It’s the step where Terraform
+       actually creates, updates, or deletes infrastructure on the cloud provider.
+
+     cmd :terraform apply --auto-approve
+
+Step10: We can update .tf file after this just run apply command
+        **It will Create backup file - Auto-created as terraform.tfstate.backup 
+
+Step11: we can delete everything using command
+   cmd: terraform destroy
