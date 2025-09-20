@@ -1,0 +1,110 @@
+******LinuxforDevOpsDay-1  Completed
+
+sudo su = super user do switch user
+
+sudo su - = switch user and change directory with root
+/     =  Root directory for Linux user
+/bin = Binaries- Root and normal users can use
+/sbin = Binaries - Only root user can use this 
+/boot = Grub loader / booting files
+/etc = All system / application / service related configuration files
+/home = normal user home directory (apart from home)
+/lib = Libraries foe the OS/application
+/lib64 = system lib
+/mnt = Mount point for secondary devices 
+/opt = optional files for the application
+/proc = processing files
+/root = home directory for root user 
+/tmp = temporary directory 
+/var = 
+*Linux Boot Process Explained
+
+***Notes- GRUB (Grand Unified Bootloader) is the default bootloader used in most Linux distributions. It is responsible for loading the operating system when you turn on your computer.
+
+===============================================================================
+
+******LinuxforDevOpsDay-2
+
+**Show Fingerprint details - 
+     cd ~
+     ls -al
+     cd .ssh/
+     ll
+     open known_hosts file - vim known_hosts
+    
+date --help 
+history -c = clear history
+history -r = Retrieve history
+ip address =
+uptime  = Check time of working server 
+reboot = Refresh the machine
+poweroff
+
+-----
+Crate more files = touch file_Name{1..100}.txt 
+                         file_name{a..z}.txt 
+
+Crate more Directory = mkdir directory_name{1.50}
+
+Crate Directory under Directory = mkdir -pv d1/d2/d3/d4 
+  **Note = --p(parent) this help crate Dir. undere Dir
+         = --v(verbose) this help show structure of directory 
+
+Move File = mv filename /location 
+Rename File =  mv OldFileName NewFileName
+
+Remove all files and Directory = rm -rf *
+Remove Files range vies = rm -f file{41..45}
+                        = rm -f file3* 
+
+Override content in file = catv > Filename
+Concat content in file = cat >> Filename
+check directory, files = ls -l
+check directory, files In reverse = ls -ltr
+Search Files, Repo with inode numbers  = ls -I
+  **Note = The inode number is a unique identifier assigned to each file and directory in the filesystem.
+
+df -h = 
+ **Note = (The df (Disk Filesystem) command in Linux is used to check the available and used disk space on mounted filesystems.)
+
+df -i = 
+  **Note =(The -i option shows inode usage instead of disk space usage.
+Inodes store metadata about files. If inodes run out, you cannot create new files even if disk space is available.) 
+------------------------------------------
+Owner Group Normal_user
+
+R - Read(4)
+W - Write(2)
+X - Execute(1)
+
+Absolute mode - use the numbers
+0 = - - - 
+1 = - - x
+2 = - W -
+3 = - W X
+4 = R - -
+5 = R - X
+6 = R W -
+7 = R W X
+
+Symbolic mode 
+-------------------------------------------
+Links:
+1. Soft link :-
+   Soft Link file size will not same,Soft link have different inode number
+
+2. Sh
+
+
+=========================================================================================
+******LinuxforDevOpsDay-3
+
+User and Group management
+--Who is a user ?
+Who uses a system, each and every process in the system run by the user ,owner 
+
+--What will happen when we create a user ?
+directory will be created 
+
+Types of Users: 
+59k user
