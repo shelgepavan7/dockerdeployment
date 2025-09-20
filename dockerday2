@@ -1,0 +1,58 @@
+*********Docker*******Day-2 Complted
+
+**Check OS version
+   cat /etc/os-release
+
+**Check Repository
+   ll /etc/yum.repos.d/ 
+
+**repository configuration file for Docker
+   cat /etc/yum.repos.d/docker-ce.repo
+
+
+***Install Docker CE (Community Edition) with all functionality, packages**
+  
+   1.install docker on Linux
+     step 1 => search install docker on Ubuntu
+     step 2 => Select(on goggle) Install Docker Engine On Ubuntu
+     step 2 => Go in RHEL
+     step 3 => Add Repo - 'dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repoll'
+     step 3.1 => Check Repository - ll /etc/yum.repos.d/
+     step 4 => Change Version number-open this file in vi - 'vim /etc/yum.repos.d/docker-ce.repo'
+     step 5 => search variable and change version no - ':%s/\$releasever/9/g' 
+     step 6 => save changes - ESC - ':wq'
+     step 7 => Run install Cmd - 'dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'
+     step 8 => 'sudo systemctl enable --now docker' (follow docker docs)
+
+-------------------------------------------------------------------------------------------
+ ******Docker Networking*****
+ Check docker network  = docker network ls
+ Check Services of any container = docker inspect Container-name
+ Create Network in Docker = docker network create network-name 
+ Create Container in this network =  docker container run -it --network network_Name ContainerName Container_image_name /bin/bash
+
+Exm-docker container run -it --network 3ri --name CentOS1 nginx /bin/bash 
+
+ ****Notes : There are Three Type of Network:
+              1.bridge
+              2.host
+              3.none(Null)   
+    
+         1.  *bridge network is by default network
+             * We can't communicate in the default network
+             * But In Custom network we can communicate 
+             *Ping - The ping command is used to test the network connection between two                     computers, servers, or containers. also check we able to connect with it or not.
+             Example - ping 172.17.0.2 
+                        
+         2. *Host Network -The host network in Docker allows a container to share the network stack of the host machine. This means that the container does not get its own IP address but instead uses the host machine’s IP and ports directly.
+             Example - docker container run -itd --network host --name my_nginx nginx /bin/bash
+
+         3. *None Network -Isolated means separated or kept apart from everything else. In technology, isolation is used to protect, secure, or limit access to resources.
+             Example - docker container run -d --name my_nginx --network none nginx
+
+----------------------------------------
+   **Volume - A Docker Volume is a persistent storage mechanism that allows containers to store and share data, even after they are stopped or removed.
+      command- 
+             **Check list - docker volume ls
+             **Create Volume - docker volume create vol_name
+             **Use Volume for Jenkin image - docker container run --name container_name -v vol_name:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins
