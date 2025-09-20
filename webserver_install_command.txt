@@ -1,0 +1,26 @@
+#!/bin/bash
+
+SVC="httpd"
+TEMPATH="/tmp/webfiles"
+PACKAGE="wget unzip httpd"
+URL="https://www.tooplate.com/zip-templates/2134_gotto_job.zip"
+ART_DIR="2134_gotto_job"
+# Intall Dependancies
+echo "Installing Packages Needed for Web Server"
+sudo yum install $PACKAGE -y > /dev/null
+echo
+echo "Starting Httpd Service"
+sudo systemctl enable $SVC
+sudo systemctl start $SVC
+echo
+#Creating a directory
+echo "Creating temp Directory"
+mkdir -p $TEMPATH
+cd $TEMPATH
+wget $URL > /dev/null
+unzip $ART_DIR.zip > /dev/null
+cp -r $ART_DIR/* /var/www/html/
+echo
+#Checking the status of httpd
+echo "Checking the HTTPD Service"
+systemctl status $SVC
