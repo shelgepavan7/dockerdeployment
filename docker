@@ -1,0 +1,82 @@
+*********Docker*******Day-1 Completed
+
+Connect With EC2 = ssh -i Downloads/Key_name username@publicIP
+change to root = sudo su -
+Set hostname  = hostnamectl set-hostname new_host_name
+check host = hostname
+refresh cmd = bash
+
+    ***Install Docker on Instance***
+check docker installed or not = which docker 
+installed docker = yum install docker
+check docker status = systemctl status docker
+start docker = systemctl start docker
+enable docker = systemctl enable docker
+docker version = docker --version
+docker information = docker info
+
+   ***Download ubuntu image***
+docker image website = hub.docker.com ->Register here(one time)
+download the Ubuntu Docker image = docker pull ubuntu
+download the Ubuntu Docker image specific version = docker pull ubuntu:25.04
+Check image list = docker image ls 
+
+**if error occurs**
+    verify if the docker group exists on your system = cat /etc/group | grep docker
+    If it doesn't exist, you need to create it manually using = sudo groupadd docker
+    Add Your User to the Docker Group = sudo usermod -aG docker $USER
+    Apply the Changes = newgrp docker
+    Try again = docker pull ubuntu
+
+      ****Create Container Different way****
+Creates a container from the Ubuntu image = docker container run -it ubuntu /bin/bash
+Creates a container from the Ubuntu image(name it) = docker container run -itd --name sohel ubuntu /bin/bash
+Creates a container from the Ubuntu image specific version= docker run -it ubuntu:25.04 /bin/bash
+
+Check running container list = docker container ls
+Check all Docker containers(running, stopped) list = docker container list -a 
+Stop containers = exit or docker container stop container_id
+Start container = docker container start container_id
+Remove container = docker rm container_id
+Container stopping and removal = docker rm -f <container_id_or_name>
+Attach(Connect with ) container = docker attach container_id
+
+Check version of OS (first connect with container)= cat /etc/os-release
+display information about all running processes = ps -ef 
+find processes specific user = ps -ef | grep username(docker) 
+The kill command used to send a signal to a process or container to terminate or control it. 
+  -- kill -9 <PID> (Signal Numbers and Their Meanings (1-9))
+
+**Help command**
+   docker --help
+   docker container --help
+
+**nginx (web server)**
+   ##without docker## 
+     install nginx = yum install nginx
+     start nginx = systemctl start nginx 
+ 
+     check configuration = cat /etc/nginx/nginx.conf
+     for edit content in nginx go in file = cd /usr/share/nginx/html
+     open file for edit = vim index.html
+     restart nginx = systemctl restart nginx
+     remove nginx = yum remove nginx -y
+
+   ##with docker## 
+      install nginx = docker pull nginx
+      Create nginx container =  docker container run -itd -p 80:80 --name SohelApp nginx 
+        *note= we can change host port_no but we want edit SG in inbound rule custom tcp port port_no  
+      
+**Own Container Docker Login ,Tag, Push on docker**
+   step 1 - docker login -> username -> password
+   step 2 - tag of image(rename) command = 'docker tag myapp:v1.0 yourusername/myapp:v1.0'
+   step 3 - docker push yourusername/myapp:v1.0 
+          Docker logout
+
+   ***If you want this image in your Server you can install**
+
+       docker pull username/reponame
+       Exm-- docker pull manishbadgujar/nginx1801
+
+
+ 
