@@ -1,0 +1,254 @@
+Check git = which git
+Install git = yum install git
+Check Version = git version 
+Initialise git in any folder = git init
+Check Status = git status
+Check hidden folder = ls -al
+Create file - vim filename
+Add file - git add filename
+Add Commit = git commit -m 'message'
+View the commit history - git log
+                        - git log --oneline
+                        - git log --oneline | wc
+                        - git log --oneline | wc -l
+::wq
+
+***This is particularly useful if you've made a commit with the wrong author details, and you want to correct it without creating a new commit.
+ - git config --global --edit
+ - git commit --amend --reset-author
+
+Check Tracked file(git Add files) - git ls-files
+Discard new Changes in exit file - git restore filename
+unstage files that were previously added to the staging area using git add - git restore --staged <file>
+Check new changes old and new file - git diff head~1 head (After commit)
+Check branch - git branch
+----------------------------------------------
+
+***Push new file on GitHub***
+
+Generate Token - Go GitHub Account --> Settings --> Developer Settings --> Personal access tokens --> Tokens(classic) --> GenerateNewToken --> Name It --> give access what you want --> Generate Token
+
+example token - 
+
+git add --> git commit -m ' ' --> git push origin master --> Username --> Paste token 
+
+**Commit all stagging file in one command
+cmd : git commit -am  '  '
+
+**Edit commit Commend -- 
+ cmd : git commit --amend  
+
+**No edit commit with direct commit command --
+ cmd: git commit --amend --no-edit
+ ------------------------------------------------------------------------------
+**This command is used to fetch and merge changes from a remote repository (like GitHub) into your current local branch.**
+
+--- git pull origin master 
+
+________________________________________________________________________________________
+
+****Branch ***
+Check branch - git branch
+Create branch - git branch branch_name
+Change branch - git checkout branch_name
+Create branch and also checkout - git checkout -b branch_name
+Rename branch - git branch -m old_brancd_name new_brancd_name
+Delete branch - git branch -d branch_name
+  **Tip: if you working on this branch it can't delete first checkout then delete
+Delete forcefully - git branch -D branch_name 
+Merge branch - git merge branch_name
+git branch --help
+_______________________________________________________________________________________
+
+**Types of Merge 
+ 1.Fast-Forward Merge - “You did all the work, and your friend didn’t touch anything.”
+    A fast-forward merge happens when the current branch has no new commits, and can be         simply “moved forward” to match the other branch.
+
+Practical : 
+_____________________________________________________________
+   Setup (Common for All Merges)
+
+      mkdir git-merge-demo
+      cd git-merge-demo
+      git init
+      echo "Initial content" > file.txt
+      git add .
+      git commit -m "Initial commit"
+______________________________________________________________
+
+**Fast-Forward Merge - Practical 
+      git checkout -b fast-forward-branch
+      echo "Fast forward change" >> file.txt
+      git commit -am "Fast forward update"
+      git checkout master
+      git merge fast-forward-branch
+----------------------------------------------------------------------------------------
+
+2.Three-Way Merge (Normal Merge)- “You and your friend worked on different parts at the same time.”
+   Used when both branches have diverged. Git creates a new commit (called a merge commit) to combine both histories.
+
+**Three-Way Merge - Practical
+
+       git checkout master
+       echo "Master edit" >> file.txt
+       git commit -am "Edit in master"
+
+       git checkout -b three-way-branch
+       echo "Three-way branch edit" >> file.txt
+       git commit -am "Edit in three-way branch"
+
+       git checkout master
+       git merge three-way-branch
+
+------------------------------------------------------------------------------------------
+
+3.Squash Merge - “You made many small edits, but just want to submit the final version.”
+   Combines all the commits from a feature branch into one single commit before merging into the target branch.
+
+**Squash Merge - Practical 
+      git checkout -b squash-branch
+      echo "Line 1" >> file.txt
+      git commit -am "Add line 1"
+      echo "Line 2" >> file.txt
+      git commit -am "Add line 2"
+      echo "Line 3" >> file.txt
+      git commit -am "Add line 3"
+
+      git checkout master
+      git merge --squash squash-branch
+      git commit -m "Squashed all changes from squash-branch"
+
+-------------------------------------------------------------------------------------------
+
+4. No Fast-Forward Merge – “Even if your friend didn’t touch anything, you still want to mark your work separately.”
+  A No Fast-Forward Merge forces Git to create a merge commit, even if a fast-forward merge is possible.
+You use it when you want to preserve the history of feature branches and make it clear that a merge occurred.
+
+**No Fast-Forward Merge - Practical
+ 
+      git checkout -b no-ff-branch
+      echo "No FF merge content" >> file.txt
+      git commit -am "No fast-forward changes"
+
+      git checkout master
+      git merge --no-ff no-ff-branch -m "Merge with --no-ff"
+----------------------------------------------------------------------------------------
+  
+***Git rebase: git rebase is a Git command used to move or combine a sequence of commits to a new base commit. if you changes in other branch files if you want to combine commit in master branch in same file name there will we can use rebase also.
+
+Practical: Commit three in master branch and commit three in our create branch and then rebase it.
+    
+cmd : git checkout feature-branch
+cmd : git rebase master (we can use any branch for rebase)
+
+merge two branch's changes in files 
+cmd : git merge branch_name(UserCreated)
+
+Without rebase:
+   A --- B ----------- E (merge commit)
+       \           /
+        C --- D
+
+With rebase:
+  A --- B --- C' --- D'   (C and D are "rebased" copies)
+
+_____________________________________________________________________________________
+
+***Version Tag
+-Check Tag - cmd: git tag
+-Create Tag - cmd : git tag versionName(v1.0)
+-Show version what we do in this version 
+  cmd: git show versionname(v1.0) 
+-Push tag on GitHub - cmd: git push origin tagname
+- We can give version to any commit using commit ID
+  Step 1: Search or Choose commit id(Copy it)
+     Cmd: git log
+   
+   Step 2: Use command and past commit id
+     Cmd: git tag tag-name(v1.08) Commit_ID 
+
+   Step 3: Using same command we can give multiple tag using same commit ID
+     Cmd :git tag tag-name(v1.08) Commit_ID 
+
+-Delete tag- cmd: git tag --delete tag_name
+-Delete multiple tag - cmd : git tag --delete tag_name1 tag_name2 tag_name3
+-*Delete tag local to remote
+   cmd: git push origin master -d tagname
+         exm - git push origin master -d v1.0
+_____________________________________________________________________________________
+
+***git stash : git stash temporarily saves your uncommitted changes (both staged and unstaged), so you can work on something else (like switching branches), and then come back to your saved changes later.
+
+--Practical of stash :
+   Step1: Modified something your current working file 
+
+   Step2: Create Stash (This saves your changes and cleans your working directory.) 
+     cmd: git stash
+
+   Step4 : Check list of stash
+     cmd: git stash list
+
+   Step5: Do something else (eg- modified file and Add it and Push it)
+
+   Step6: restores your stash changes and removes them from the stash list.
+     cmd: git stash pop    
+
+  (now our Conflict fixed)
+________________________________________________________________________________________
+
+***git cherry-pick : git cherry-pick is used to apply a specific commit from one branch to another branch — like picking one cherry (commit) from a tree and putting it into another basket (branch).
+
+--Practical of cherry-pick :
+  
+ Step1: Create one branch and Create file and make some commits
+   cmd: git checkout -b mybranch 
+        vim File
+        git add
+        git commit -am '' (do 2 or 3 times:wq)
+
+ Step2: Check commit history
+   cmd: git log --oneline
+
+ Step3: Swich branch to Master branch
+   cmd: git checkout master
+
+ Step4: Now I want only Second commit in master branch
+   cmd: git cherry-pick Commit_id
+0cf754778c9
+________________________________________________________________________________________
+
+
+***Fork in GitHub :A fork is a copy of someone else's repository that lives in your GitHub account.
+It allows you to:
+“Make your own version of a project to experiment, make changes, or propose improvements — without affecting the original.”
+
+Step1: Go to any public repo
+
+Step2: Click the “Fork” button at the top-right.-Create fork
+
+Step3: Clone the fork to Our local machine:
+
+Step4: Create a branch, make changes, and push. Or We can by using master
+
+Step5: Open a Pull Request from your fork to the original repo.
+       it means we can suggest changes to origin repo author by sending pull request.
+
+---------------------------------------------------------------------------------------
+
+**Push code Linux To GitHub 
+  1.git init
+  2.git status
+  3. git add
+  4. git commit 
+  5. git config --global user.email 
+     git config --global user.name 
+  6. git remote -v
+  7. git remote remove origin (if already exit origin)
+  8. git remote add origin https://github.com/yourusername/MyFirstRepo.git
+  9. git push origin master
+  10.git pull origin master --rebase (if error about master branch)
+  11. git push origin master 
+
+Interview Question
+
+1. what is different between git pull and push  

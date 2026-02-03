@@ -1,0 +1,42 @@
+**Jenkins Interview Notes
+
+ 1.What is Jenkins ?
+  - Jenkins is an open-source project written in java that runs on windows , macOS ,Unix and other operating system it is free , community support and lots of plugins port no - 8080
+
+ - Jenkins automate the entire software lifecycle 
+ - Jenkins was originally developed by Sun microsystem in 2004 under the name Hudson
+ - The project was later named Jenkins when oracle bought Microsystems
+ - whenever developers write code , we integrate all that code of all developers at that point of time and we build ,test and deliver/deploy to the client this process is called CI/CD
+ - Jenkins helps us to achieve this because of CI , nows bugs will be reported fast and get rectified fast so the entire software development happens that.
+-----------------------------------------------------------------------------------------
+2. Workflow of Jenkins ?
+   1.Code Commit to GitHub  
+        Developers push code changes to a GitHub repository.
+        A GitHub webhook triggers Jenkins to initiate the pipeline upon code commits.
+   2.Code Checkout by Jenkins
+        Jenkins uses the Git plugin to clone the latest code from the repository.
+   3.Build with Maven
+       Jenkins invokes Maven to compile the code, resolve dependencies, and run unit tests.
+       The typical Maven goal used is clean install
+   4.Automated Testing with Selenium
+       Post-build, Jenkins executes Selenium test suites to perform automated UI testing.
+       Test results are collected and can be displayed using Jenkins plugins like JUnit or Allure.
+   5.Artifact Deployment to Artifactory
+       Upon successful testing, Jenkins deploys the build artifacts (e.g., JAR, WAR files) to JFrog Artifactory.
+       This is facilitated by the Jenkins Artifactory plugin, which manages artifact uploads and metadata. 
+   6.Code Quality Analysis
+       Integrate tools like SonarQube to analyze code quality and enforce standards.
+       Jenkins can be configured to run SonarQube scans as part of the pipeline.
+   7.Deployment to Environments
+       Jenkins can automate deployment to various environments (e.g., staging, production) using tools like Docker, Kubernetes, or traditional servers.
+       Deployment steps can be defined within the Jenkins pipeline script.
+
+-------------------------------------------------------------------------------------------
+3. Advantages of Jenkins
+
+ -It has lots of plugins available
+ - You can write your own plugins, we can use community plugin
+ - Jenkins is not just tool , it is a framework - Exm - we can do whatever you want all you need in plugins
+ - we can attach slaves (nodes) to Jenkins master it instruct other (slaves) to do job if slaves are not available Jenkins itself does the job
+ - Jenkins also behave as crone server replacement i.e Can do scheduled task  
+ - It can crate labels 

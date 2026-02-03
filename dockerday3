@@ -1,0 +1,238 @@
+****Create our own image in docker****           cmd = command
+
+Step 1: Launch Server 
+Step 2: Install Docker -> Start Docker -> Enable Docker
+Step 3: Create Directory : mkdir Myproject -> cd Myproject
+Step 4: Create One file under this Repo : vim DockerFile (name should be DockerFile)
+ Write Docker file -> Save it
+
+Example of DockerFile
+-----------------------------------------------------------------
+   # Start from a base image
+FROM ubuntu:latest
+
+# Install something (e.g., Nginx)
+RUN apt update && apt install -y nginx
+
+# Copy your own files (optional)
+# COPY . /usr/share/nginx/html
+
+# Expose a port
+EXPOSE 80
+
+# Start the service
+CMD ["nginx", "-g", "daemon off;"]
+-----------------------------------------------------
+Step 5: Build docker file and tag it and also give it version and this docker file is under root so give .(dot)
+ Cmd: docker build -t Myapp:v1 . 
+ 
+Step 6: Run a Container from Your OWN Image 
+ Syntax = Docker run -d -p 80:80 --name (NewNameofContainer)  OwnImageName:version (if you gave version of your Image)    
+ Cmd: docker run -d -p 80:80 --name myapp Myapp:v1
+
+Tip: we can change DockerFile exm - FROM nginx:1.27.0 (version)
+    
+
+DockerFile    **Create for index.html file**
+------------------------------------------------------------   
+   FROM nginx:latest
+
+   LABEL maintainer="email.com"
+
+   COPY index.html /usr/share/nginx/html/index.html                   
+  
+   EXPOSE 80
+
+   CMD ["nginx","-g","daemon off;"]
+--------------------------------------------------------------
+** Steps= Step 5 => Step 6 => Check Output using port and IP address
+
+**Imp tip : When you modify your index.html or other files after building the image, Docker does not automatically update the container 
+
+
+==========================================================================================================================================
+
+****Docker Swarm ***
+
+Docker Swarm is Docker’s native tool for managing a cluster of Docker nodes (i.e., multiple servers or machines) as a single virtual system. It lets you orchestrate (manage) multiple containers running on different machines.
+
+ ***Think of it like this:
+Imagine you have 3 laptops. Instead of running Docker containers on each one separately, Docker Swarm lets you control all of them from one place, as if they were one big machine.
+
+***Advantages of Docker Swarm
+-Deployment of web service
+-Resource allocation
+-Health Monitoring
+-High availability (if one node fails, others keep running)
+-Load balancing
+-Scaling up/down services
+-Easy to set up
+
+**Components of Docker**
+Service ->		A group of tasks (containers) running the same image.
+Task ->			A single container running as part of a service.
+Manager Node ->		Controls the whole Swarm. Decides where to run containers.
+Worker Node -> 		Executes tasks (runs containers) as told by the manager.
+Overlay Network ->	Allows containers across different nodes to communicate securely.
+Swarm Mode ->		The special Docker mode that lets it work in cluster mode.
+-----------------------------------------------
+**What is Cluster **
+A cluster is a group of computers (or servers) that work together to act like a single system.A cluster All the manager and worker nodes combined. It lets you run containers across multiple machines as if they’re one big computer.
+
+**Think of it like this:
+Imagine a team of friends working on a school project. Each friend does part of the work, but together they complete the full project faster and better.
+
+That’s what a cluster does for computers or servers.
+----------------------------------------------------------------------------
+     
+
+*** ⚙️Master (Manager) Node – Internal Components 
+
+
+Component	                Description
+🧠 Raft Consensus Module => Used for maintaining the cluster state and electing a leader (ensures consistency between manager nodes).
+
+⚖️ Orchestrator =>	Monitors the desired state vs actual state of services and tasks. Automatically restarts, reschedules, or kills containers as needed.
+
+📦 Allocator =>	 Assigns network resources (like IP addresses), volumes, and other cluster-level configurations.
+
+🔧 Dispatcher =>  Sends tasks to the Worker nodes and manages communication with them.
+
+📋 Scheduler =>	 Decides where (which node) a task (container) should run, based on resource availability and constraints.
+
+👨‍💼 API Server => Accepts CLI/API requests (like creating services or nodes).
+
+🔐 Certificate Authority (CA) => Issues TLS certificates for secure encrypted communication between nodes.
+
+----------------------------------------------------------
+***⚙️Worker Node – Key Components
+
+Component	              Description
+👷 Worker (Agent) => A background process that connects to the manager node. It receives tasks and sends back status updates. This is the communication bridge.
+
+🚀 Executor => Responsible for actually launching and managing the container processes (based on the task definition received).
+
+📦 Container Runtime (Docker Engine) => The Docker engine that runs and manages containers. This includes pulling images, running, stopping containers, etc.
+
+🔐 TLS & Mutual Authentication	=> Ensures secure communication between worker and manager nodes. Certificates are automatically issued by the manager.
+
+----------------------------------------------------------------------------
+
+                         
+Practical of Swarm :
+ 
+ Step:1
+   Create Three Server - 
+     Server1 = Master Node - install docker -> Start and Enable docker
+     Server2 = Work Node 1- install docker -> Start and Enable docker
+     Server3 = Work Node 2 - install docker -> Start and Enable docker
+
+ Step:2
+     Check Swarm command - docker swarm 
+
+     Initialize Docker Swarm (on Master Node)- (Master IP is your Master server public IP)
+        cmd - docker swarm init --advertise-addr <MASTER-IP>  
+      
+     This will return a command like:(it will generate token)
+      docker swarm join --token <TOKEN> <MASTER-IP>:2377
+
+ Step:3 
+    Check your Security group there is 2377 port open or not if not then open port
+      exm - Custom TCP -> 2377 -> Anyone (0.0.0.0/0) 
+
+ Step:4
+       Paste the join command received above On Worker Node 1 and Worker Node 2:
+        cmd - docker swarm join --token <TOKEN> <MASTER-IP>:2377
+
+ Step 5: Check Nodes (on Master Node)
+    cmd - docker node ls
+    **You should see all 3 nodes (1 leader/master, 2 workers).
+
+ Step 6 : Create Service 
+   cmd: docker service create --name myservice --replicas 3 -p 80:80 nginx:latest
+ 
+ Step 7: Check Services where they running 
+   cmd: docker service ps service_name 
+
+ Step 8: We can scale Containers
+   Scaling means increasing or decreasing the number of container instances (called replicas) of a service.
+   cmd: docker service scale Service_Name=5(we can give any number here increasing or decreasing )
+
+Step 9: we can Update Service(updates the image used by the service to a new version (nginx:alpine).
+  cmd: docker service update --image nginx:alpine(imagename:version-3.5.4) service_name
+
+Step 10: Remove the Service
+  cmd: docker service rm service_name
+
+-------------------------------------------------------------------------------------
+  **Stack Deployment
+    - A Stack is a collection of services, networks, and volumes defined in a single               file (usually docker-compose.yml), and deployed together.  
+ -A docker-compose.yml file is a configuration file where you define your entire application’s services, networks, and volumes — all in one place.
+      
+Deploy stack:
+  Step1: vim FileName.yaml
+
+  Step2: Write File
+ Example
+---------------------------------------------------
+version:'3.3'
+services:
+  sample1:
+   image: 'nginx:latest'
+   ports:
+     - "8080:80"
+  sample2:
+    image: 'ubuntu'
+
+----------------------------------------------------
+  Step3:cmd : docker stack deploy -c filename stackname(any random name)
+ 
+  Step4 : we can scale Services 
+         cmd : docker service scale stackname_servicename=3
+
+  Step5: docker service update --image nginx:alpine(imagename:version-3.5.4) service_name
+
+==============================================================
+
+****Drain is used to temporarily stop scheduling tasks (containers) on a node.
+--Check node list: 
+   cmd: docker node ls
+
+--Drain Node
+   cmd : docker node update --availability drain Id/hostname
+
+**** Reactivate Node (After Maintenance)
+   cmd: docker node update --availability active hostname/id
+
+--Check node list: 
+   cmd: docker node ls
+
+==================================================================
+
+***Create a Service Inside This Network
+Step1: Create Network
+ cmd: docker network create --driver overlay mynetwork
+
+Step2: Check network
+ cmd: docker network ls
+
+Step3: Create Service under the network
+ cmd: docker service create --name redis --replicas 3 --network mynetwork redis:3.0.6
+
+Step4: Check where it create 
+  cmd: docker inspect service_id
+
+**We can update network like default to user create network
+   cmd: docker service update --network-add network_name service_Name
+
+**We can remove network 
+  cmd: docker service update --network-rm network_name service_Name
+
+
+
+
+
+
+
+
+ 

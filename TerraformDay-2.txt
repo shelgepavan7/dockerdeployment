@@ -1,0 +1,14 @@
+**you can either use Security Credentials (Access Key + Secret Key) or assign an IAM Role to your EC2 instance.
+
+**An IAM Role is like a temporary, limited-access identity you assign to an EC2 instance (or other AWS services). More secure and manageable
+
+ Step1: just create IAM roles like ec2 , administrationfullaccess
+ Step2: Attach with server(ec2)
+ Step3: Install Terraform and use Terraform command
+
+
+terraform.tfstate if is it delete ? backed
+s3 version
+code modernization
+create different files for backed, aws,s3
+create variable  files

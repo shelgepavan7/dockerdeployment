@@ -1,0 +1,55 @@
+***Project Code
+   1. Create project and push code on GitHub New Repo
+   2. Create Dockerfile and Try to build this Dockerfile using docker command
+
+**Example :
+-----------------------------------------------------------------------
+# Use official Nginx base image
+FROM nginx:alpine
+
+# Set working directory inside container
+WORKDIR /usr/share/nginx/html
+
+# Remove the default Nginx index page
+RUN rm -rf ./*
+
+# Copy all your frontend files into the Nginx html directory
+COPY . .
+
+# Expose port 80 to host
+EXPOSE 80
+
+------------------------------------------------------------------------
+
+***Instance 
+   1. Create Instance and Launch it
+   2. Install Jenkins, Git , Docker on this instance
+
+***Jenkins 
+   1. Connect with Jenkins 
+   2. Create one Pipeline - use sample hello word
+   3. Generate git script 
+      click on pipeline > Select git in sample step add repo url > Generate script
+   4. Paste in first stage > steps 
+   5. Build Pipeline 
+   6. Check workspace folder created or not cd /var/lib/Jenkins
+   7. make sure git install (if error) 
+   8. now add new stage in pipeline for build docker image
+       **make sure docker install and start , enable
+   9. Add docker in Jenkins group
+      cmd : usermod -aG docker jenkins 
+   10. Restart Jenkins
+      cmd: systemctl restart jenkins
+
+     
+**Example 
+---------------------------------------------------------------------------
+  stage("Build"){
+        steps{
+           sh 'docker build -t webapp .'
+
+}
+}
+
+---------------------------------------------------------------------------  
+Docker Pipeline Plugins
